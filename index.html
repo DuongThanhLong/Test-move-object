@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circle</title>
+    <style>
+        .circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+        }
+        
+        .red {
+            background-color: red;
+        }
+        
+        .blue {
+            background-color: blue;
+            left: 120px;
+        }
+        
+        .violet {
+            background-color: violet;
+            left: 240px;
+        }
+        
+        .darkOrange {
+            background-color: darkOrange;
+            left: 360px;
+        }
+        
+        .moveable {
+            position: absolute;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="circle red moveable" onclick=funcClick(this);></div>
+    <div class="circle blue moveable" onclick=funcClick(this);></div>
+    <div class="circle violet moveable" onclick=funcAdd();></div>
+
+    <script>
+        window.onload = function() {
+            let arrCircle = document.getElementsByClassName("circle");
+            for (const circle of arrCircle) {
+                setupDragDrop(circle);
+            }
+        }
+
+        function setupDragDrop(object) {
+            object.onmousedown = function(e) {
+                if (isNaN(parseInt(this.style.left))) {
+                    this.style.left = this.offsetLeft + "px";
+                }
+                if (isNaN(parseInt(this.style.top))) {
+                    this.style.top = this.offsetTop + "px";
+                }
+                this.oldX = e.clientX;
+                this.oldY = e.clientY;
+                this.isDown = true;
+            };
+
+            object.onmouseup = function() {
+                this.isDown = false;
+            };
+
+            object.onmousemove = function(e) {
+                if (this.isDown) {
+                    let dx = e.clientX - this.oldX;
+                    let dy = e.clientY - this.oldY;
+
+                    this.style.left = parseInt(this.style.left) + dx + "px";
+                    this.style.top = parseInt(this.style.top) + dy + "px";
+                    this.oldX = e.clientX;
+                    this.oldY = e.clientY;
+                }
+            };
+        }
+
+        function funcClick(object) {
+
+        }
+
+        function funcAdd() {
+            let node = document.createElement("div");
+            node.className = "circle darkOrange moveable";
+            document.body.appendChild(node);
+            setupDragDrop(node);
+        }
+    </script>
+</body>
+
+</html>
